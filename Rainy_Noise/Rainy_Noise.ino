@@ -13,7 +13,7 @@ float sah = 0.0f;
 float sah2 = 0.0f;
 float sah3 = 0.0f;
 float lowns = 0.0f;
-float sat = 0.95f;
+float sat = 0.97f;
 
 uint32_t rng = 1;
 int lfrt = 0;
@@ -31,20 +31,21 @@ inline float rainNoiseStep() {
 
     if (--lfrt <= 0)
     {
-        lfrt = (rng % 3000) + 500;
+        lfrt = (rng % 3500) + 256;
         sah += (rndm - sah) * 0.15f;
-        sah2 = 4.5f * fabs(rndm);
-        sah3 = 0.5f * fabs(sah);
+        sah2 = 4.0f * fabs(rndm);
+        sah3 = 0.25f * fabs(sah);
         LED_PORT ^= (1 << LED_BIT);
     }
 
-    bp2 += (sah - bp2 * 0.25f - lp2) * 0.6f;
+    bp2 += (sah - bp2 * 0.25f - lp2) * 0.5f;
     lp2 += sah2 * bp2;
 
     lowns += (rndm - lowns) * 0.25f + rndm * 0.03f;
-    lp1   += (rndm * sah3 - lp1) * 0.1f;
+    lp1   += (rndm * sah3 - lp1) * 0.15f;
 
-    float out = lp1 + bp2 + lowns * 0.05f;
+    float out = lp1 + bp2 + lowns * 0.04f;
+    out *= 3.0f;
 
     if (out > sat) out = sat;
     if (out < -sat) out = -sat;
