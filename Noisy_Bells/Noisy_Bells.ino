@@ -11,11 +11,12 @@ float bpRain = 0.0f;
 float dropEnv = 0.0f;
 float dropFreq = 0.0f;
 int   dropTimer = 0;
-float sh1 = 0.0f, sh2 = 0.0f;
+float sh1 = 0.0f;
+float sh2 = 0.0f;
 float echoLP = 0.0f;
 
 float RAIN_LP   = 0.025f;
-float RAIN_BP   = 0.15f;
+float RAIN_BP   = 0.25f;
 float DROP_DEC  = -0.995f;
 float ECHO_LP   = 0.03f;
 float ECHO_GAIN = 0.5f;
@@ -39,10 +40,11 @@ ISR(TIMER1_COMPA_vect) {
     dropEnv *= DROP_DEC;
     dropFreq += sh1;
     float drop = dropEnv * sinf(sh2 * dropFreq);
-    float mix = lpRain * 0.7f + bpRain * 0.3f + drop * 10.0f;
+    float mix = lpRain * 0.7f + bpRain * 0.3f + drop * 7.0f;
 
     echoLP += (mix - echoLP) * ECHO_LP;
     mix += echoLP * ECHO_GAIN;
+    mix *= 1.5f;
 
     int sample = (int)(mix + 128.0f);
     if (sample < 0)   sample = 0;
