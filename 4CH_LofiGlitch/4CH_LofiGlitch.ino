@@ -53,8 +53,8 @@ ISR(TIMER1_COMPA_vect) {
   }
 
   uint8_t mixed = 128 + kick + hat + acid + fm + glitch;
-  if(mixed < 10) mixed = 10;
-  if(mixed > 245) mixed = 245;
+  if(mixed < 0) mixed = 0;
+  if(mixed > 255) mixed = 255;
 
   OCR2A = (uint8_t)mixed;
 
